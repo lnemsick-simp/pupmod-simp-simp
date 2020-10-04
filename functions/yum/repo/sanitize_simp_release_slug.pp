@@ -8,7 +8,7 @@
 function simp::yum::repo::sanitize_simp_release_slug(
   Optional[String] $simp_release_slug = undef
 ) {
-    if defined('$simp_release_slug') and !empty($simp_release_slug) {
+    if ($simp_release_slug !~ Undef) and !empty($simp_release_slug) {
       $_release_slug = $simp_release_slug
     }
     else {

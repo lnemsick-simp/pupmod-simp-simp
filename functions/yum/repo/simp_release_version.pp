@@ -1,27 +1,31 @@
-# Returns the SIMP release version
+# Returns the SIMP release version for use in SIMP internet yum repositories.
 #
-# @param simp_release_slug
-#   The ``slug`` to sanitize
+# When `$simp_release_version` is specified, this value is simply returned.
+# Otherwise, attempts to determine the SIMP release version automatically.
+# When this automatic detection fails, this function fails.
 #
-# @return String
+# @param simp_release_version
+#   Optional desired SIMP release version.
+#
+# @return [Simp::Version]
 #
 function simp::yum::repo::simp_release_version(
-  Optional[Simp::Version] $simp_release_version = undel
+  Optional[Simp::Version] $simp_release_version = undef
 ) {
-    if defined('$simp_release_version') and !empty($simp_release_slug) {
-      $_release_slug = $simp_release_slug
+  if $simp_release_version !~ Undef {
+    $_release_version = $simp_release_version
+  }
+  else {
+    $_simp_version = simplib::simp_version()
+    if $_simp_version == 'unknown' {
+      # We get here if the simp.version file (in /etc/simp or
+      # C:/ProgramData/SIMP) is not available or the pupmod-simp-simp
+      # RPM is not installed.
+      fail('Unable to determine SIMP version automatically.')
     }
     else {
-      $simp_version = simplib::simp_version()
-      $_simp_maj_version = (split($simp_version,'\.'))[0]
-
-      if $_simp_maj_version in ['6', '5'] {
-        $_release_slug = "${_simp_maj_version}_X"
-      }
-      else {
-        fail("SIMP version ${simp_version} does not map to a known yum repository slug")
-      }
+      $_release_version = $_simp_version 
     }
-    err "XXX release_slug [${_release_slug}]"
-    $_release_slug
   }
+  $_release_version
+}
