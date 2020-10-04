@@ -3,7 +3,7 @@
 # @param simp_release_slug
 #   The ``slug`` to sanitize
 #
-# @return String
+# @return [String]
 #
 function simp::yum::repo::sanitize_simp_release_slug(
   Optional[String] $simp_release_slug = undef
