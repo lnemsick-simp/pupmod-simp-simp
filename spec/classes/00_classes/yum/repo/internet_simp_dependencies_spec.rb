@@ -38,7 +38,7 @@ describe 'simp::yum::repo::internet_simp_dependencies' do
             end
           end
 
-          ['6.0.0', '6.1.0-foo'].each do |_version|
+          ['6.0.0', '6.1.0-0'].each do |_version|
             describe "when `simplib::simp_version() is valid (#{_version})" do
               let(:params) {{}}
 
