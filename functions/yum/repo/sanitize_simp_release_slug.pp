@@ -1,4 +1,7 @@
-# Sanitize the release slug in the SIMP repo URLs
+# DEPRECATED Sanitize the release slug in the SIMP repo URLs
+#
+# The packagecloud repositories to which this release slug generated
+# by this function corresponds are no longer maintained.
 #
 # @param simp_release_slug
 #   The ``slug`` to sanitize
