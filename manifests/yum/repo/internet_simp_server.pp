@@ -2,7 +2,7 @@
 #
 # The packagecloud yum repository that used to be configured by this class is
 # no longer maintained. As an interim workaround, this class now uses
-# simp::yum::repo::internet_simp to configure the correct repository. You
+# ``simp::yum::repo::internet_simp`` to configure the correct repository. You
 # should switch to using ``simp::yum::repo::internet_simp directly``, as this
 # class will be removed in a future release.
 #
@@ -23,5 +23,5 @@ class simp::yum::repo::internet_simp_server (
   $_release_slug = simp::yum::repo::sanitize_simp_release_slug( $simp_release_slug )
   yumrepo { "simp-project_${_release_slug}": ensure => absent }
 
-  include 'simp:yum:repo:internet_simp'
+  include 'simp::yum::repo::internet_simp'
 }

@@ -19,11 +19,12 @@ describe 'simp::yum::repo::internet_simp_dependencies' do
           let(:params) {{ :simp_release_slug => '5_X' }}
 
           it { is_expected.to compile.with_all_deps }
-          it { is_expected.to contain_yumrepo('simp-project_5_X_Dependencies') }
+          it { is_expected.to contain_yumrepo('simp-project_5_X_Dependencies').with_ensure('absent') }
+          it { is_expected.to create_class('simp::yum::repo::internet_simp') }
         end
 
         context 'when `simp_release_slug` is undef' do
-          ['4.0.0', ''].each do |_version|
+          ['4.0.0', 'unknown', ''].each do |_version|
             context "when `simplib::simp_version() returns an unsupported value (#{_version})" do
               let(:params) {{}}
 
@@ -45,9 +46,9 @@ describe 'simp::yum::repo::internet_simp_dependencies' do
                 "function simplib::simp_version() { '#{_version}' }"
               end
 
-              it do
-                is_expected.to compile.with_all_deps
-              end
+              it { is_expected.to compile.with_all_deps }
+              it { is_expected.to contain_yumrepo('simp-project_6_X_Dependencies').with_ensure('absent') }
+              it { is_expected.to create_class('simp::yum::repo::internet_simp') }
             end
           end
 

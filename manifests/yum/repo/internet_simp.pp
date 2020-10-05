@@ -44,7 +44,7 @@
 #     environments.
 #
 class simp::yum::repo::internet_simp(
-  String[1]               $simp_repos_package     = 'simp-release-community'
+  String[1]               $simp_repos_package     = 'simp-release-community',
   String[1]               $simp_repos_package_url = "https://download.simp-project.com/${simp_repos_package}.rpm",
   Simp::PackageEnsure     $package_ensure         = simplib::lookup('simp_options::package_ensure', { 'default_value' => 'installed' }),
   String                  $simp_release_type      = 'releases',
@@ -60,7 +60,8 @@ class simp::yum::repo::internet_simp(
 
   if $package_ensure == 'absent' {
     file { ['/etc/yum/vars/simprelease', '/etc/yum/vars/simpreleasetype']:
-      ensure => absent
+      ensure => absent,
+      before => Package[$simp_repos_package]
     }
   }
   else {
@@ -68,16 +69,16 @@ class simp::yum::repo::internet_simp(
     file { '/etc/yum/vars/simprelease':
       owner   => 'root',
       group   => 'root',
-      mode    => '0644'
-      content => "${_simp_release_version}\n"
+      mode    => '0644',
+      content => "${_simp_release_version}\n",
       require => Package[$simp_repos_package]  # will create directory
     }
 
     file { '/etc/yum/vars/simpreleasetype':
       owner   => 'root',
       group   => 'root',
-      mode    => '0644'
-      content => "${_simp_release_type}\n"
+      mode    => '0644',
+      content => "${simp_release_type}\n",
       require => Package[$simp_repos_package]  # will create directory
     }
   }
