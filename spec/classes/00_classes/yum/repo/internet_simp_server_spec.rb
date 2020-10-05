@@ -18,6 +18,10 @@ describe 'simp::yum::repo::internet_simp_server' do
         context 'when the `simp_release_slug` parameter is specified' do
           let(:params) {{ :simp_release_slug => '5_X' }}
 
+          let(:pre_condition) do
+            "function simplib::simp_version() { '5.3.0' }"
+          end
+
           it { is_expected.to compile.with_all_deps }
           it { is_expected.to contain_yumrepo('simp-project_5_X').with_ensure('absent') }
           it { is_expected.to create_class('simp::yum::repo::internet_simp') }
